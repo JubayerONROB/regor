@@ -1,9 +1,9 @@
 import pytest
 
-from research_engine import config, domains
-from research_engine.cli import main
-from research_engine.errors import ConfigError
-from research_engine.project import Project, init_project
+from regor import config, domains
+from regor.cli import main
+from regor.errors import ConfigError
+from regor.project import Project, init_project
 
 
 def test_init_creates_structure(tmp_path):

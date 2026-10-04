@@ -25,11 +25,12 @@ Environment: Windows 11, Python 3.10.7, numpy 2.2.6, scipy 1.15.3, PyYAML 6.0.3,
 jsonschema 4.26.0, matplotlib 3.10.9, pytest 9.1.1.
 
 ```
-91 passed in 360.25s (0:06:00)
+91 passed in 332.62s (0:05:32)
 ```
 
-(An earlier run of the same suite took 278 s. Duration varies with machine load: most
-time goes to subprocess launches and git commits in fixtures.)
+(Duration varies with machine load: most time goes to subprocess launches and git commits
+in fixtures.) On every push, GitHub Actions runs the suite, the demo and a secret scan on
+Linux, macOS and Windows with Python 3.10 and 3.12 (`.github/workflows/tests.yml`).
 
 | File | Tests | Covers |
 |---|---|---|
@@ -59,9 +60,17 @@ time goes to subprocess launches and git commits in fixtures.)
   manuscript.
 - journal checklist: profile not verified and limits unknown, reported as `[?]`
 
+## Manual live check: Kaggle (recorded 2026-10-04)
+
+One CPU kernel and one GPU kernel ran on real Kaggle through `CliKaggleClient` (CLI
+1.7.4.5). Both came back COMPLETED / VALIDATED, and the GPU kernel was assigned 2× Tesla
+T4. Details are in [KAGGLE_INTEGRATION.md](KAGGLE_INTEGRATION.md#live-verification-2026-10-04).
+This check is manual, because automated tests never use credentials.
+
 ## Not covered by automated tests
 
-- Live Kaggle API calls (`CliKaggleClient.push/status/output` against real Kaggle)
+- Live Kaggle API calls in CI (verified manually once; failure paths and accelerator-type
+  selection not verified live)
 - Live Crossref and arXiv lookups
 - pandoc-based DOCX/PDF export (skipped when pandoc is absent)
 - Ctrl+C cancellation of a running local batch (implemented, not automated)

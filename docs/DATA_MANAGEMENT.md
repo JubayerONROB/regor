@@ -3,9 +3,9 @@
 ## Registration
 
 ```bash
-research data register --from-yaml data/my_dataset.yaml
+regor data register --from-yaml data/my_dataset.yaml
 # or
-research data register --name sensors --version 1.0 --file data/raw/train.csv:train \
+regor data register --name sensors --version 1.0 --file data/raw/train.csv:train \
     --file data/raw/test.csv:test --license "CC-BY-4.0" --source-kind local \
     --target fault --group-column machine_id --access-verified
 ```

@@ -3,10 +3,10 @@ import json
 import pytest
 
 from conftest import git_commit, make_spec, save_spec
-from research_engine import approvals, engine, provenance
-from research_engine.errors import ResearchError
-from research_engine.experiments import list_runs, load_run, update_run
-from research_engine.results import validate_run
+from regor import approvals, engine, provenance
+from regor.errors import ResearchError
+from regor.experiments import list_runs, load_run, update_run
+from regor.results import validate_run
 
 
 def test_dry_run_creates_nothing(proj):
@@ -113,7 +113,7 @@ def test_approval_required_single_use_and_bound_to_config(proj):
     proj.cfg["stopping"]["compute_budget_hours"] = 100
     res = engine.run_experiment(proj, "EXP-H")
     assert not res["executed"] and any("approval" in p for p in res["plan"]["problems"])
-    from research_engine.experiments import config_sha256, load_spec
+    from regor.experiments import config_sha256, load_spec
     approvals.grant(proj, "EXP-H", config_sha256(load_spec(proj, "EXP-H")), "local", "Dr Test", max_runs=1)
     assert engine.run_experiment(proj, "EXP-H")["executed"]
     # consumed: a second execution needs a new approval
@@ -141,7 +141,7 @@ def test_immutable_fields(proj):
 
 
 def test_manual_import(proj, tmp_path):
-    from research_engine.cli import main
+    from regor.cli import main
     m = tmp_path / "bench.csv"
     m.write_text("metric,value\nscore,0.42\n", encoding="utf-8")
     att = tmp_path / "scope_capture.txt"

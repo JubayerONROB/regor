@@ -1,13 +1,13 @@
 {
-  "_comment": "Copy to <project>/.claude/settings.json. Denies the assistant the commands that must stay with the researcher. Pattern matching is by command prefix: also deny any wrapper you use (e.g. .venv/Scripts/research.exe approve).",
+  "_comment": "Copy to <project>/.claude/settings.json. Denies the assistant the commands that must stay with the researcher. Pattern matching is by command prefix: also deny any wrapper you use (e.g. .venv/Scripts/regor.exe approve).",
   "permissions": {
     "deny": [
-      "Bash(research approve:*)",
-      "Bash(research proposals approve:*)",
-      "Bash(research proposals reject:*)",
-      "Bash(research hypothesis set:*)",
-      "Bash(research loop review:*)",
-      "Bash(research approvals revoke:*)",
+      "Bash(regor approve:*)",
+      "Bash(regor proposals approve:*)",
+      "Bash(regor proposals reject:*)",
+      "Bash(regor hypothesis set:*)",
+      "Bash(regor loop review:*)",
+      "Bash(regor approvals revoke:*)",
       "Bash(git push:*)",
       "Bash(gh repo create:*)",
       "Bash(kaggle kernels push:*)",
@@ -18,9 +18,9 @@
       "Read(./**/kaggle*.json)"
     ],
     "ask": [
-      "Bash(research run:*)",
-      "Bash(research remote collect:*)",
-      "Bash(research decision add:*)",
+      "Bash(regor run:*)",
+      "Bash(regor remote collect:*)",
+      "Bash(regor decision add:*)",
       "Bash(git commit:*)",
       "Bash(rm:*)"
     ]

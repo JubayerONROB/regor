@@ -1,21 +1,53 @@
-# research-pipeline
+# Regor
 
-**A tool that helps you run experiments carefully and write up only what your results
-actually show.**
+[![tests](https://github.com/JubayerONROB/regor/actions/workflows/tests.yml/badge.svg)](https://github.com/JubayerONROB/regor/actions/workflows/tests.yml)
+![python](https://img.shields.io/badge/python-3.10%2B-blue)
+![license](https://img.shields.io/badge/license-MIT-green)
 
-`research-pipeline` is a free, open-source command-line tool for researchers, students
-and engineers. It keeps an experiment honest from the first idea to the final paper. It
-records exactly what you ran, checks whether each result can be trusted, and runs the
-statistics properly. When you write your paper, it checks that every number and claim
-traces back to real evidence.
+**Regor is a command-line tool that won't let an unverified number into your research
+paper.**
 
-It works in any field that produces measurable results: machine learning, electrical
-engineering, signal processing, biomedical engineering, physics, materials science,
-and others.
+It records every experiment run permanently and checks whether each result can be
+trusted. When you write the paper, every number has to trace back to a validated result,
+and every citation to a verified reference. It works in any field with measurable
+results, and it was designed for working alongside AI coding assistants, which are fast
+but sometimes make things up.
 
-> **Project status:** early (version 0.1). All 91 automated tests pass. Running
-> experiments on Kaggle is implemented but has only been tested with a simulated
-> ("mock") Kaggle connection, not the real service. See [docs/ROADMAP.md](docs/ROADMAP.md).
+```bash
+pip install -e ".[dev]"                        # from a clone of this repo
+python examples/demo_synthetic/run_demo.py     # full study on synthetic data, ~1 minute
+```
+
+### What it looks like
+
+Three typical mistakes planted in a draft results section (real output, abridged):
+
+```text
+$ regor manuscript audit
+overall: FAIL  submission-ready (automated criteria): NO
+  FAIL [numerical]  results:36 unsupported number '71%' in a results-bearing section
+                    (use {{claim:ID}} or '71% [claim:ID]')
+  FAIL [numerical]  results:37 number 0.09 does not match claim C001 verified value 0.070049
+  FAIL [references] results:37 citation [@smith2023] is not in the reference registry
+                    (possibly nonexistent)
+```
+
+Instead of typing numbers, you write `{{claim:C001}}`, and Regor fills in the value it
+recomputed from validated runs. Every run is recorded permanently and checked before it
+counts as evidence (from the demo, abridged):
+
+```text
+$ regor status
+  runs: 16 {'COMPLETED': 16} validation {'VALIDATED': 15, 'INVALID': 1}
+  EXP-PROP   proposed   runs=6 {'VALIDATED': 5, 'INVALID': 1}   # the INVALID one was a mock run
+```
+
+> **Status: early (v0.1).** 91 automated tests pass. Kaggle cloud execution was verified
+> end to end on real Kaggle (a CPU kernel, and a GPU kernel that was assigned 2× Tesla
+> T4). GPU *type* selection is not yet verified, because it needs Kaggle CLI 2.x. The
+> audit checks that claims are **traceable**, not that they are **true**. See
+> [docs/HALLUCINATION_PREVENTION.md](docs/HALLUCINATION_PREVENTION.md) and
+> [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ---
 
@@ -60,7 +92,7 @@ Think of it as a careful lab notebook combined with a strict proofreader.
 | **9. Audit the paper** | Checks the manuscript line by line. It flags typed numbers that come from nowhere, numbers that don't match the data, citations that can't be verified, words like "significantly" or "novel" without supporting evidence, and unfinished placeholders. It gives a clear **PASS / WARNING / FAIL**, plus a checklist for human review. |
 | **10. Prepare for a journal** | Builds a submission checklist from the journal's guidelines (which you supply) and exports Markdown or LaTeX files. |
 
-At any point, `research status` rebuilds a full summary of where your project stands,
+At any point, `regor status` rebuilds a full summary of where your project stands,
 straight from the saved files. If you close your laptop and come back a month later,
 nothing is lost.
 
@@ -85,21 +117,21 @@ exactly which version of your code produced each result.
 **Windows (PowerShell):**
 
 ```powershell
-git clone https://github.com/JubayerONROB/research-pipeline.git
-cd research-pipeline
+git clone https://github.com/JubayerONROB/regor.git
+cd regor
 py -3.10 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
-.\.venv\Scripts\research.exe --help
+.\.venv\Scripts\regor.exe --help
 ```
 
 **macOS / Linux:**
 
 ```bash
-git clone https://github.com/JubayerONROB/research-pipeline.git
-cd research-pipeline
+git clone https://github.com/JubayerONROB/regor.git
+cd regor
 python3 -m venv .venv
 ./.venv/bin/pip install -e ".[dev]"
-./.venv/bin/research --help
+./.venv/bin/regor --help
 ```
 
 Optional extras: `matplotlib` for charts (included in `[dev]`), the `kaggle` package for
@@ -135,12 +167,12 @@ works.
 
 ## Using it for your own study: a walk-through
 
-Here is the typical sequence. Every command has built-in help (`research <command> -h`).
+Here is the typical sequence. Every command has built-in help (`regor <command> -h`).
 
 **1. Create a project**
 
 ```bash
-research init my_study --domain signal_processing   # the domain is optional
+regor init my_study --domain signal_processing   # the domain is optional
 cd my_study
 ```
 
@@ -158,10 +190,10 @@ research:
 **2. Register and check your data**
 
 ```bash
-research data register --name sensors --version 1.0 \
+regor data register --name sensors --version 1.0 \
     --file data/raw/train.csv:train --file data/raw/test.csv:test \
     --license "CC-BY-4.0" --access-verified
-research data validate sensors
+regor data validate sensors
 ```
 
 Read the report it writes in `data/validation/`. Fix anything marked FAIL.
@@ -169,7 +201,7 @@ Read the report it writes in `data/validation/`. Fix anything marked FAIL.
 **3. Describe an experiment**
 
 ```bash
-research exp new EXP-001 --title "Baseline: filter A" --type baseline
+regor exp new EXP-001 --title "Baseline: filter A" --type baseline
 ```
 
 This creates `experiments/configs/EXP-001.yaml`, where you list the script to run, the
@@ -177,7 +209,7 @@ random seeds, and the measurements ("metrics") it produces. Your script reads it
 settings and saves its results with two lines of helper code:
 
 ```python
-from research_engine.runtime import load_context, write_metrics
+from regor.runtime import load_context, write_metrics
 ctx = load_context()                     # settings, seed and output folder
 # ... your experiment ...
 write_metrics(ctx, {"rmse": 0.12}, n_samples=1000)
@@ -186,24 +218,24 @@ write_metrics(ctx, {"rmse": 0.12}, n_samples=1000)
 **4. Run it**
 
 ```bash
-research run EXP-001 --dry-run    # shows the plan; runs nothing
-research run EXP-001              # one run per seed, each permanently recorded
-research validate                 # see which runs can be trusted
+regor run EXP-001 --dry-run    # shows the plan; runs nothing
+regor run EXP-001              # one run per seed, each permanently recorded
+regor validate                 # see which runs can be trusted
 ```
 
 **5. Compare and report**
 
 ```bash
-research analyze EXP-001 --compare EXP-002 --metric rmse --plot --name rq1
-research report --all
+regor analyze EXP-001 --compare EXP-002 --metric rmse --plot --name rq1
+regor report --all
 ```
 
 **6. Record what you can claim**
 
 ```bash
-research claim add --id C001 --text "Mean error of filter B" --type quantitative \
+regor claim add --id C001 --text "Mean error of filter B" --type quantitative \
     --rq RQ1 --source-kind runs_metric --experiment EXP-002 --metric rmse --statistic mean
-research claim verify
+regor claim verify
 ```
 
 A claim is "verified" only when the tool recomputes it from validated results.
@@ -211,22 +243,22 @@ A claim is "verified" only when the tool recomputes it from validated results.
 **7. Decide what to do next**
 
 ```bash
-research propose            # suggested follow-ups, ranked, each with a reason
-research proposals list
+regor propose            # suggested follow-ups, ranked, each with a reason
+regor proposals list
 ```
 
 **8. Write and audit the paper**
 
 ```bash
-research manuscript draft
-research manuscript build
-research manuscript audit
+regor manuscript draft
+regor manuscript build
+regor manuscript audit
 ```
 
 In the paper's source files, you write `{{claim:C001}}` instead of typing a number. The
 tool fills in the verified value. If a result changes, the paper changes with it.
 
-**Coming back later?** Run `research status --write` and open
+**Coming back later?** Run `regor status --write` and open
 `reports/progress_reports/PROGRESS.md`.
 
 ---
@@ -238,22 +270,23 @@ send it to Kaggle, wait for it, and bring the results back. Because cloud runs u
 quota (and paid services cost money), **every remote run needs your explicit approval**:
 
 ```bash
-research approve run EXP-001 --backend kaggle --runs 3 --by "Your Name"
-research run EXP-001 --backend kaggle
-research remote collect
+regor approve run EXP-001 --backend kaggle --runs 3 --by "Your Name"
+regor run EXP-001 --backend kaggle
+regor remote collect
 ```
 
 Your Kaggle password file stays outside the project and is never copied, printed or
-uploaded. This feature has been tested only against a simulated Kaggle connection so
-far. Read [docs/KAGGLE_INTEGRATION.md](docs/KAGGLE_INTEGRATION.md) before relying on it.
+uploaded. This has been verified end to end on real Kaggle (a CPU run, and a GPU run
+that was assigned two Tesla T4 GPUs). Choosing a *specific* GPU type is not verified yet.
+Read [docs/KAGGLE_INTEGRATION.md](docs/KAGGLE_INTEGRATION.md) for details.
 
 ---
 
 ## Working with an AI assistant
 
 Every new project includes ready-made instructions for Claude Code (`CLAUDE.md`) and
-slash commands such as `/rp-recon` (catch up on project status), `/rp-experiment`
-(design an experiment) and `/rp-audit` (audit the paper). The rules tell the assistant
+slash commands such as `/regor-recon` (catch up on project status), `/regor-experiment`
+(design an experiment) and `/regor-audit` (audit the paper). The rules tell the assistant
 never to fabricate results or citations, never to type numbers into the paper, and never
 to grant approvals on your behalf. To enforce the last rule, copy
 `templates/claude_settings.example.json` into your project as

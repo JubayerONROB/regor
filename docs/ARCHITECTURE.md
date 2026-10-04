@@ -4,9 +4,9 @@
 
 1. **Files are the state.** Every module reads and writes plain files inside a project
    directory. There is no database and no daemon, and nothing lives only in memory.
-   `research status` rebuilds the full picture from disk.
+   `regor status` rebuilds the full picture from disk.
 2. **Schemas are the interfaces.** Modules communicate through documented file formats
-   (`research_engine/schemas/*.schema.json`), validated on every load and save.
+   (`regor/schemas/*.schema.json`), validated on every load and save.
 3. **The core is domain-free.** No module branches on a field or a model type. Domain
    knowledge lives in data (`domains.py` profiles, or a project's `domain.yaml`).
 4. **Evidence flows one way.** raw outputs → run record → validation → analysis →
@@ -18,7 +18,7 @@
 
 | Module | Responsibility | Reads | Writes |
 |---|---|---|---|
-| `cli.py` | `research` command | everything | via modules |
+| `cli.py` | `regor` command | everything | via modules |
 | `project.py` | locate, load and validate the project, `init` scaffolding | `project.yaml` | project tree |
 | `config.py` | JSON-schema validation, defaults | `schemas/` | – |
 | `domains.py` | domain adapter profiles | `domain.yaml` | – |
@@ -68,8 +68,8 @@ Approvals are bound to this hash.
 
 ## Execution contract
 
-The executor sets `RP_RUN_ID`, `RP_RUN_DIR`, `RP_CONFIG`, `RP_SEED` (and
-`RP_RESUME_DIR` when resuming) and expects `metrics.json` in `RP_RUN_DIR`. The same
+The executor sets `REGOR_RUN_ID`, `REGOR_RUN_DIR`, `REGOR_CONFIG`, `REGOR_SEED` (and
+`REGOR_RESUME_DIR` when resuming) and expects `metrics.json` in `REGOR_RUN_DIR`. The same
 script runs locally and on Kaggle unchanged.
 
 ## Extending

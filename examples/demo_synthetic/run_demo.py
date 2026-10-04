@@ -3,7 +3,7 @@
     python examples/demo_synthetic/run_demo.py [--workdir DIR]
 
 Copies ./template into a fresh work directory (default: ./_work, gitignored), then
-drives the full lifecycle through the real `research` CLI:
+drives the full lifecycle through the real `regor` CLI:
 
   init -> data register/validate -> experiment validation -> dry run -> local runs ->
   result validation -> comparison + figures -> claims -> reports -> proposals ->
@@ -25,8 +25,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[1]))
 
-from research_engine.cli import main as research  # noqa: E402
-from research_engine.project import init_project  # noqa: E402
+from regor.cli import main as research  # noqa: E402
+from regor.project import init_project  # noqa: E402
 
 ABSTRACT = """# Abstract
 

@@ -37,5 +37,5 @@ template/
   scripts/generate_data.py          synthetic data generator
   data/demo_signals.dataset.yaml    manifest entry
   experiments/configs/EXP-*.yaml    baseline, proposed, ablation
-  experiments/scripts/denoise.py    the experiment (uses research_engine.runtime)
+  experiments/scripts/denoise.py    the experiment (uses regor.runtime)
 ```

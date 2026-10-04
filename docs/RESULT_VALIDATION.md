@@ -6,7 +6,7 @@ Raw evidence, processed results, derived statistics and interpretation are kept 
 |---|---|---|
 | Raw evidence | `runs/raw/<run_id>/` | the experiment script or the import (never edited afterwards) |
 | Run record | `runs/metadata/<run_id>.json` | engine (identity immutable; bookkeeping only) |
-| Derived statistics | `analysis/comparisons/*.json` (hashed) | `research analyze` |
+| Derived statistics | `analysis/comparisons/*.json` (hashed) | `regor analyze` |
 | Interpretation | report sections marked [INTERPRETATION], manuscript prose | researcher |
 
 ## Validation status
@@ -42,7 +42,7 @@ Raw evidence, processed results, derived statistics and interpretation are kept 
 | identical metrics for different seeds with the same config | PROVISIONAL (seed probably ignored) |
 | dirty working tree, dataset changed later, synthetic data, manual import | INFO |
 
-Re-validation (`research validate`) is safe at any time. It reads raw files and updates
+Re-validation (`regor validate`) is safe at any time. It reads raw files and updates
 only the record's `validation` field.
 
 ## Rules

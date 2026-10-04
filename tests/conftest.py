@@ -15,12 +15,12 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from research_engine import datasets  # noqa: E402
-from research_engine.project import Project, init_project  # noqa: E402
+from regor import datasets  # noqa: E402
+from regor.project import Project, init_project  # noqa: E402
 
 SCRIPT = '''
 import sys, time
-from research_engine.runtime import load_context, write_metrics
+from regor.runtime import load_context, write_metrics
 ctx = load_context()
 p = ctx.params
 mode = p.get("mode", "ok")

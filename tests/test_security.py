@@ -1,7 +1,7 @@
 """Secret scanner. Token-shaped strings are assembled at runtime so no secret-like literal
 exists in the repository itself."""
 
-from research_engine.security import scan_paths, scan_text
+from regor.security import scan_paths, scan_text
 
 GH = "gh" + "p_" + "Z9y8X7w6V5" * 4
 AWS = "AK" + "IA" + "ABCDEFGHIJKLMNOP"
@@ -25,8 +25,8 @@ def test_sensitive_filenames_and_allowlist(tmp_path):
 
 
 def test_opt_out_marker():
-    assert scan_text(f"FIXTURE = '{GH}'  # rp-allow-secret\n") == []
+    assert scan_text(f"FIXTURE = '{GH}'  # regor-allow-secret\n") == []
 
 
 def test_generic_assignment():
-    assert scan_text("password = 'correct-horse-battery-staple'\n")[0].rule == "generic_assignment"  # rp-allow-secret (fixture)
+    assert scan_text("password = 'correct-horse-battery-staple'\n")[0].rule == "generic_assignment"  # regor-allow-secret (fixture)

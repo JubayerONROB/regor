@@ -15,7 +15,7 @@ rather than relying on discipline. The mechanisms, from data to manuscript:
 
 ## 2. Claims are verified by recomputation
 
-`research claim verify` recomputes each claim from its declared source:
+`regor claim verify` recomputes each claim from its declared source:
 
 | Source kind | Verification |
 |---|---|

@@ -1,9 +1,9 @@
 import json
 
 from conftest import git_commit, make_spec, save_spec
-from research_engine import engine, evidence, literature
-from research_engine.analysis.compare import compare, write_summary
-from research_engine.analysis.viz import plot_comparison
+from regor import engine, evidence, literature
+from regor.analysis.compare import compare, write_summary
+from regor.analysis.viz import plot_comparison
 
 
 def _run_both(proj):

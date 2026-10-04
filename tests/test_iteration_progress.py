@@ -1,10 +1,10 @@
 import pytest
 
 from conftest import git_commit, make_spec, save_spec
-from research_engine import engine, evidence, iteration, progress
-from research_engine.analysis.compare import compare, write_summary
-from research_engine.cli import main
-from research_engine.reports import experiment_report
+from regor import engine, evidence, iteration, progress
+from regor.analysis.compare import compare, write_summary
+from regor.cli import main
+from regor.reports import experiment_report
 
 
 def test_proposals_from_evidence_gaps(proj):
@@ -62,7 +62,7 @@ def test_hypothesis_verdict_needs_verified_claims(proj):
                         "source": {"kind": "runs_metric", "experiment": "EXP-B", "metric": "score"}})
     evidence.verify_all(proj)
     progress.set_hypothesis(proj, "H1", "supported", "Dr Test", ["C1"])
-    from research_engine.project import Project
+    from regor.project import Project
     assert Project.load(proj.root).cfg["research"]["hypotheses"][0]["status"] == "supported"
 
 

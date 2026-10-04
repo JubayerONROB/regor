@@ -5,11 +5,11 @@ import json
 import pytest
 
 from conftest import git_commit, make_spec, save_spec
-from research_engine import engine, evidence, literature
-from research_engine.analysis.compare import compare, write_summary
-from research_engine.manuscript import draft, journal
-from research_engine.manuscript.audit import run_audit
-from research_engine.manuscript.render import build
+from regor import engine, evidence, literature
+from regor.analysis.compare import compare, write_summary
+from regor.manuscript import draft, journal
+from regor.manuscript.audit import run_audit
+from regor.manuscript.render import build
 
 SECTIONS = ["abstract", "methodology", "results", "declarations", "references"]
 

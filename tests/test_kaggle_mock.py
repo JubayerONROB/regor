@@ -5,10 +5,10 @@ import json
 import pytest
 
 from conftest import git_commit, make_spec, save_spec
-from research_engine import approvals, engine
-from research_engine.errors import ExecutionError, SecretDetected
-from research_engine.executors import kaggle as K
-from research_engine.experiments import config_sha256, list_runs, load_spec
+from regor import approvals, engine
+from regor.errors import ExecutionError, SecretDetected
+from regor.executors import kaggle as K
+from regor.experiments import config_sha256, list_runs, load_spec
 
 
 def _approve(proj, exp, runs=1):
@@ -24,11 +24,11 @@ def test_submit_and_collect_complete_but_mock_is_never_evidence(proj):
     _approve(proj, "EXP-A")
     client = K.MockKaggleClient(metrics={"score": 0.3})
     r = engine.run_experiment(proj, "EXP-A", backend="kaggle", seeds=[0], kaggle_client=client)["runs"][0]
-    assert r["status"] == "SUBMITTED" and r["remote"]["slug"].startswith("mockuser/rp-exp-a-")
+    assert r["status"] == "SUBMITTED" and r["remote"]["slug"].startswith("mockuser/regor-exp-a-")
     kdir = proj.root / "runs" / "remote" / r["run_id"] / "kernel"
     meta = json.loads((kdir / "kernel-metadata.json").read_text())
     assert meta["is_private"] is True and meta["enable_gpu"] is False and meta["kernel_type"] == "script"
-    code = (kdir / "rp_kernel.py").read_text()
+    code = (kdir / "regor_kernel.py").read_text()
     assert "BUNDLE" in code and "KAGGLE_KEY" not in code
     out = engine.collect_remote(proj, kaggle_client=client)
     assert out[0]["status"] == "COMPLETED"
@@ -83,8 +83,8 @@ def test_cli_client_credentials_only_in_child_env(tmp_path, monkeypatch):
     cred.parent.mkdir()
     fake_key = "0123456789abcdef" * 2
     cred.write_text(json.dumps({"username": "someone", "key": fake_key}))
-    monkeypatch.setenv("RP_TEST_KAGGLE", str(cred))
-    c = K.CliKaggleClient("RP_TEST_KAGGLE", executable="kaggle-not-installed")
+    monkeypatch.setenv("REGOR_TEST_KAGGLE", str(cred))
+    c = K.CliKaggleClient("REGOR_TEST_KAGGLE", executable="kaggle-not-installed")
     env = c._env()
     assert env["KAGGLE_USERNAME"] == "someone" and env["KAGGLE_KEY"] == fake_key
     import os

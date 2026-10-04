@@ -3,7 +3,7 @@
 ## Sources, not outputs
 
 You write `manuscript/sections/NN_<section>.md` (the order and names come from
-`project.yaml → manuscript.sections`). `research manuscript build` resolves markers into
+`project.yaml → manuscript.sections`). `regor manuscript build` resolves markers into
 `manuscript/build/manuscript.md` and `build_manifest.json`, which records every claim
 value, config value, table hash and citation used.
 
@@ -28,11 +28,11 @@ FAIL.
 ## Commands
 
 ```bash
-research manuscript init      # skeletons for every configured section (never overwrites)
-research manuscript draft     # evidence-driven drafts: results, methodology, experimental_setup,
+regor manuscript init      # skeletons for every configured section (never overwrites)
+regor manuscript draft     # evidence-driven drafts: results, methodology, experimental_setup,
                               # related_work, limitations, declarations (configured ones only)
-research manuscript build     # resolve markers -> manuscript/build/manuscript.md
-research manuscript audit     # PASS / WARNING / FAIL + claim-to-evidence table + human checklist
+regor manuscript build     # resolve markers -> manuscript/build/manuscript.md
+regor manuscript audit     # PASS / WARNING / FAIL + claim-to-evidence table + human checklist
 ```
 
 The drafter writes a section file only if it is still the untouched skeleton. Otherwise
@@ -54,12 +54,12 @@ acknowledgments, generative-AI use). Declarations come only from
 
 Conflicting claims are flagged on both claims (`contradicted_by`). The audit warns
 wherever either is used. Resolve the conflict by investigation, and record the outcome
-by superseding the wrong claim with a reason (`research claim supersede`), never by
+by superseding the wrong claim with a reason (`regor claim supersede`), never by
 deleting it.
 
 ## Journal formatting
 
-The scientific source stays venue-independent. `research journal export SLUG` produces:
+The scientific source stays venue-independent. `regor journal export SLUG` produces:
 
 - `manuscript.md` (copy of the build)
 - `manuscript.tex` + `references.bib`: a generic article template from a conservative
@@ -69,7 +69,7 @@ The scientific source stays venue-independent. `research journal export SLUG` pr
   "SKIPPED".
 - `cover_letter_draft.md` with placeholders
 
-`research journal check SLUG` compares the build against the researcher-filled profile:
+`regor journal check SLUG` compares the build against the researcher-filled profile:
 words, abstract words, figures, tables, keywords, required sections and statements,
 placeholders, and audit status. Unknown limits are shown as `[?]`. The checklist never
 claims acceptance or suitability.

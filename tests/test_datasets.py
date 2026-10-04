@@ -1,8 +1,8 @@
 import pytest
 
 from conftest import write_csv
-from research_engine import datasets
-from research_engine.errors import ConfigError, DatasetNotValidated
+from regor import datasets
+from regor.errors import ConfigError, DatasetNotValidated
 
 
 def _reg(proj, name, files, **extra):

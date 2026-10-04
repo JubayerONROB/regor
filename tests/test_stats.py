@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from scipy import stats as sps
 
-from research_engine.analysis import stats
+from regor.analysis import stats
 
 
 def test_describe_matches_scipy():

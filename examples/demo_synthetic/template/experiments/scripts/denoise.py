@@ -11,7 +11,7 @@ from pathlib import Path
 
 import numpy as np
 
-from research_engine.runtime import load_context, write_metrics
+from regor.runtime import load_context, write_metrics
 
 
 def load_split(path: Path):

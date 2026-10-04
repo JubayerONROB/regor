@@ -5,8 +5,8 @@ import json
 
 import pytest
 
-from research_engine import literature as lit
-from research_engine.errors import ConfigError, ResearchError
+from regor import literature as lit
+from regor.errors import ConfigError, ResearchError
 
 FAKE_DOI = "10.0000/fixture.0001"
 

@@ -1,13 +1,13 @@
-# CLAUDE.md: working with research-pipeline in Claude Code
+# CLAUDE.md: working with regor in Claude Code
 
-This repository holds the research engine (`research_engine/`). Research projects are
-separate directories created with `research init`, and each gets its own short CLAUDE.md
-and slash commands in `.claude/commands/` (`/rp-recon`, `/rp-plan`, `/rp-experiment`,
-`/rp-analyze`, `/rp-audit`, …).
+This repository holds the research engine (`regor/`). Research projects are
+separate directories created with `regor init`, and each gets its own short CLAUDE.md
+and slash commands in `.claude/commands/` (`/regor-recon`, `/regor-plan`, `/regor-experiment`,
+`/regor-analyze`, `/regor-audit`, …).
 
 ## Resume an interrupted session
 
-1. `research --project <dir> status --write`, then read `reports/progress_reports/PROGRESS.md`.
+1. `regor --project <dir> status --write`, then read `reports/progress_reports/PROGRESS.md`.
 2. Read `project.yaml`, `docs/decisions/DECISIONS.md` and `experiments/plans/proposals.yaml`.
 3. Continue from "Next recommended steps". **Never rely on conversation memory** for
    results, decisions or approvals. The files are the record.
@@ -24,14 +24,14 @@ render, audit, journal). See docs/ARCHITECTURE.md.
 ## Important commands
 
 ```
-research init NAME [--domain D]          research check
-research data register|validate|list     research exp new|validate|list
-research run ID [--dry-run] [--seeds ..] research validate
-research analyze REF --compare X --metric M [--plot]
-research report --all                    research claim add|verify|list
-research lit add|import|verify|export    research propose / proposals list
-research loop status                     research manuscript draft|build|audit
-research journal init|check|export       research security scan [PATH]
+regor init NAME [--domain D]          regor check
+regor data register|validate|list     regor exp new|validate|list
+regor run ID [--dry-run] [--seeds ..] regor validate
+regor analyze REF --compare X --metric M [--plot]
+regor report --all                    regor claim add|verify|list
+regor lit add|import|verify|export    regor propose / proposals list
+regor loop status                     regor manuscript draft|build|audit
+regor journal init|check|export       regor security scan [PATH]
 ```
 
 ## Hard rules
@@ -43,7 +43,7 @@ research journal init|check|export       research security scan [PATH]
 2. **Never type a number into a manuscript section.** Add a claim and use
    `{{claim:ID}}`, or an annotated literal such as `0.153 [claim:C001]`, or a
    `{{spec:...}}`/`{{dataset:...}}`/`{{project:...}}` marker.
-3. **Never grant approvals** (`research approve`) or approve proposals on the researcher's
+3. **Never grant approvals** (`regor approve`) or approve proposals on the researcher's
    behalf. Remote, GPU and long runs need a researcher-granted, single-use approval.
 4. **Never edit `runs/raw/` or `runs/metadata/`.** Raw evidence is checksummed, and
    editing it makes runs INVALID.
@@ -52,7 +52,7 @@ research journal init|check|export       research security scan [PATH]
 6. **Never resolve conflicting results silently.** Contradictions are recorded on both
    claims, and a claim is superseded with a reason rather than deleted.
 7. **Never change** a research question, dataset, methodology or evaluation protocol
-   without the researcher's approval. Record the change with `research decision add`.
+   without the researcher's approval. Record the change with `regor decision add`.
 8. **Never claim** statistical significance without an analysis, generalisation beyond
    the evaluated conditions, or novelty without a documented, scoped literature search.
 9. Inconclusive is inconclusive. Failed is failed. Report both.
@@ -61,8 +61,8 @@ research journal init|check|export       research security scan [PATH]
 
 - Never print, copy, commit or log credentials (`pat.txt`, `kaggle*.json`, `.env`,
   tokens). Credentials live outside repositories. The Kaggle adapter reads a path from
-  `$RP_KAGGLE_CREDENTIALS` and passes the values only to the `kaggle` subprocess.
-- Before every commit: `research security scan .`, then review `git status` and
+  `$REGOR_KAGGLE_CREDENTIALS` and passes the values only to the `kaggle` subprocess.
+- Before every commit: `regor security scan .`, then review `git status` and
   `git diff --cached --stat`. Stage explicit paths. Never `git add -A` in a repository
   that holds data or credentials.
 - Do not read files in other repositories unless the researcher asks, and never modify
@@ -72,9 +72,9 @@ research journal init|check|export       research security scan [PATH]
 
 - IDs: `RQ1`, `H1`, `EXP-...` (any `[A-Za-z][A-Za-z0-9_.-]*`), claims `C...`, proposals
   `P-NNN`, decisions `D-NNN`.
-- All configs are validated against `research_engine/schemas/*.schema.json`
-  (`research check`).
-- Experiment scripts use `research_engine.runtime` (`load_context`, `write_metrics`).
+- All configs are validated against `regor/schemas/*.schema.json`
+  (`regor check`).
+- Experiment scripts use `regor.runtime` (`load_context`, `write_metrics`).
 
 ## Experiment lifecycle
 
@@ -87,7 +87,7 @@ decision → next iteration.
 A sentence in the manuscript is acceptable only if each number traces to a verified
 claim or configuration, each prior-work statement cites a verified reference, and each
 comparative or significance statement is backed by a verified comparative or
-statistical claim. Run `research manuscript audit` after every edit. A manuscript with
+statistical claim. Run `regor manuscript audit` after every edit. A manuscript with
 any FAIL is not submission-ready, and even a PASS needs the human checklist.
 
 ## Environment notes (Windows)

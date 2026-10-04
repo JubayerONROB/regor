@@ -3,7 +3,7 @@
 ## The specification (unit of work)
 
 `experiments/configs/<ID>.yaml`, validated against `schemas/experiment.schema.json` plus
-cross-reference checks (`research exp validate`):
+cross-reference checks (`regor exp validate`):
 
 | Field | Purpose |
 |---|---|
@@ -63,8 +63,8 @@ concurrently, up to `execution.max_concurrent`. One failure never stops the othe
 
 ## Resuming
 
-`research run ID --resume-from <run_id>` creates a new run whose script receives
-`RP_RESUME_DIR` (the earlier run's outputs). Whether a script can resume is up to the
+`regor run ID --resume-from <run_id>` creates a new run whose script receives
+`REGOR_RESUME_DIR` (the earlier run's outputs). Whether a script can resume is up to the
 script. The engine records the link.
 
 ## Experiment types: what each should establish
@@ -76,4 +76,4 @@ script. The engine records the link.
 - **generalization**: a different dataset; never pooled with in-distribution results
 - **efficiency**: runtime and resource metrics with units
 - **replication**: the same config with new seeds or on new hardware
-- **measurement / simulation**: non-ML studies, often imported with `research import`
+- **measurement / simulation**: non-ML studies, often imported with `regor import`

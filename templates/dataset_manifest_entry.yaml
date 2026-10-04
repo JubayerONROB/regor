@@ -1,4 +1,4 @@
-# Template for `research data register --from-yaml <this file>`.
+# Template for `regor data register --from-yaml <this file>`.
 # Measurement example (electrical engineering). Delete what does not apply.
 name: inverter_bench
 version: "1.0"

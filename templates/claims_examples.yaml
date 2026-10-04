@@ -1,4 +1,4 @@
-# Examples of each claim source kind (add with `research claim add` or append to evidence/claims.yaml).
+# Examples of each claim source kind (add with `regor claim add` or append to evidence/claims.yaml).
 claims:
   - id: C001
     text: "Mean RMSE of the proposed estimator on the held-out test split"

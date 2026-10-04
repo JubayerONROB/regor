@@ -8,7 +8,7 @@ tested end to end · ⬜ planned / not implemented
 | Capability | Status | Notes |
 |---|---|---|
 | Project init (with/without domain), layout, scaffold, slash commands | ✅ | never overwrites existing files |
-| Config schemas + validation (`research check`) | ✅ | project, experiment, manifest, claims, run record |
+| Config schemas + validation (`regor check`) | ✅ | project, experiment, manifest, claims, run record |
 | 14 built-in domain profiles + `domain.yaml` override | ✅ | data-only adapters |
 | Dataset registration, fingerprints, generic and measurement checks, leakage and split integrity, time continuity, custom validators, gate | ✅ | CSV/TSV deep checks; other formats fingerprint + custom |
 | Experiment specs with cross-reference checks; config identity hash | ✅ | |
@@ -16,7 +16,7 @@ tested end to end · ⬜ planned / not implemented
 | Preflight gates: dataset, GPU, budget, approvals | ✅ | |
 | Local executor: timeout, cancellation, parallel seeds, resume link | ✅ / 🟡 | Ctrl+C path implemented but not covered by an automated test |
 | Manual import of external measurements | ✅ | |
-| Kaggle adapter with mock client: packaging, secret scan, retry, poll, collect | ✅ | |
+| Kaggle adapter: packaging, secret scan, retry, poll, collect | ✅ | mock-tested; CPU and GPU kernels live-verified on Kaggle (2026-10-04) |
 | Result validation (4 statuses, tamper detection, sample counts, mock detection, seed-ignored detection) | ✅ | |
 | Statistics: descriptive, t/bootstrap CIs, Welch/Student/paired t, Mann-Whitney, Wilcoxon, permutation, effect sizes, Holm/Bonferroni, assumption checks | ✅ | |
 | Comparisons over validated runs with exclusion listing; figures with provenance | ✅ | |
@@ -35,7 +35,7 @@ tested end to end · ⬜ planned / not implemented
 
 | Capability | Gap |
 |---|---|
-| Real Kaggle execution (`CliKaggleClient`) | implemented, **never run against live Kaggle** here; quota/GPU discovery not exposed by the CLI |
+| Real Kaggle execution (`CliKaggleClient`) | success path live-verified (CPU + GPU kernels); accelerator-type selection (CLI 2.x) and live failure paths not verified; quota not exposed by the CLI |
 | DOCX/PDF export | requires pandoc; skipped (and reported) otherwise |
 | LaTeX export | generic article template; journal classes must be applied manually |
 | Methodology audit | compares specs vs runs, datasets and metric definitions, and ablation isolation; does **not** read source code to confirm a prose description matches it |
@@ -51,5 +51,5 @@ tested end to end · ⬜ planned / not implemented
 - ⬜ Mixed-effects or hierarchical models for nested designs; Bayesian alternatives
 - ⬜ HTML rendering of reports
 - ⬜ Semantic search over the literature matrix (still restricted to verified references)
-- ⬜ Pre-commit hook that runs `research security scan` automatically
+- ⬜ Pre-commit hook that runs `regor security scan` automatically
 - ⬜ Journal profile library (only with fields verified from official guidelines)
