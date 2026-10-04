@@ -1,0 +1,38 @@
+# Template for `research data register --from-yaml <this file>`.
+# Measurement example (electrical engineering). Delete what does not apply.
+name: inverter_bench
+version: "1.0"
+synthetic: false
+description: "Bench measurements of inverter efficiency at varying load."
+source:
+  kind: instrument            # local | kaggle | url | instrument | manual | generated
+  location: data/raw/inverter_bench
+  access_verified: true
+  access_notes: "Recorded in-house; no third-party restrictions."
+license:
+  name: "[RESEARCHER INPUT REQUIRED]"
+  url: ""
+  permitted_use: "[RESEARCHER INPUT REQUIRED]"
+  redistribution_allowed: null
+collection_methodology: "[RESEARCHER INPUT REQUIRED]"
+format: csv
+files:
+  - {path: data/raw/inverter_bench/runs.csv}
+target: null
+group_column: session_id        # e.g. subject, machine, session: checked for split leakage
+id_column: sample_id
+time_column: t_s
+expected_interval: 0.001
+column_checks:
+  - {column: v_dc, unit: V, min: 0, max: 450, max_missing_fraction: 0.0}
+  - {column: i_ac, unit: A, min: -60, max: 60}
+  - {column: efficiency, unit: "%", min: 0, max: 100}
+metadata:
+  instrument: "[RESEARCHER INPUT REQUIRED]"
+  calibration_date: "[RESEARCHER INPUT REQUIRED]"
+  sampling_rate_hz: 1000
+metadata_requirements: [instrument, calibration_date, sampling_rate_hz]
+custom_checks: []               # e.g. ["src.checks:power_balance"]
+preprocessing: []
+known_limitations:
+  - "[RESEARCHER INPUT REQUIRED]"

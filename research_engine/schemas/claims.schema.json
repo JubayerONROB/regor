@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "evidence/claims.yaml",
+  "type": "object",
+  "required": ["claims"],
+  "properties": {
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "text", "type", "source"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^C[0-9A-Za-z_.-]+$"},
+          "text": {"type": "string", "minLength": 1},
+          "type": {"enum": ["quantitative", "comparative", "statistical", "qualitative",
+                            "methodological", "efficiency", "limitation", "literature", "novelty"]},
+          "research_question": {"type": ["string", "null"]},
+          "experiments": {"type": "array", "items": {"type": "string"}},
+          "source": {
+            "type": "object",
+            "required": ["kind"],
+            "properties": {
+              "kind": {"enum": ["runs_metric", "analysis", "artifact", "literature", "researcher"]},
+              "experiment": {"type": "string"},
+              "metric": {"type": "string"},
+              "statistic": {"enum": ["mean", "median", "std", "min", "max", "n", "sum"]},
+              "file": {"type": "string"},
+              "json_path": {"type": "string"},
+              "references": {"type": "array", "items": {"type": "string"}},
+              "note": {"type": "string"}
+            }
+          },
+          "stated_value": {"type": ["number", "null"]},
+          "tolerance": {"type": ["number", "null"], "minimum": 0},
+          "unit": {"type": ["string", "null"]},
+          "display_digits": {"type": "integer", "minimum": 0, "maximum": 12},
+          "metric_definition": {"type": ["string", "null"]},
+          "analysis_method": {"type": ["string", "null"]},
+          "limitations": {"type": "array", "items": {"type": "string"}},
+          "status": {"enum": ["unverified", "verified", "failed", "needs_review", "superseded"]},
+          "verified_value": {"type": ["number", "null"]},
+          "verified_at": {"type": ["string", "null"]},
+          "verification_notes": {"type": ["string", "null"]},
+          "contradicted_by": {"type": "array", "items": {"type": "string"}},
+          "used_in": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+# Examples of each claim source kind (add with `research claim add` or append to evidence/claims.yaml).
+claims:
+  - id: C001
+    text: "Mean RMSE of the proposed estimator on the held-out test split"
+    type: quantitative
+    research_question: RQ1
+    source: {kind: runs_metric, experiment: EXP-PROP, metric: rmse, statistic: mean}
+    unit: "V"
+    display_digits: 3
+  - id: C002
+    text: "Paired mean difference in RMSE (proposed minus baseline), Holm-adjusted"
+    type: comparative
+    research_question: RQ1
+    source: {kind: analysis, file: analysis/comparisons/rq1_rmse.json, json_path: comparisons.0.result.mean_difference}
+  - id: C003
+    text: "The RMSE difference between the proposed estimator and the baseline is significant after Holm correction"
+    type: statistical
+    research_question: RQ1
+    source: {kind: analysis, file: analysis/comparisons/rq1_rmse.json, json_path: comparisons.0.result.p_adjusted}
+  - id: C004
+    text: "The preprocessing protocol is implemented as described"
+    type: methodological
+    source: {kind: artifact, file: src/preprocessing/pipeline.py}
+  - id: C005
+    text: "Prior work reported the baseline under a different protocol"
+    type: literature
+    source: {kind: literature, references: [verifiedKey2021]}
+  - id: C006
+    text: "Results were obtained on a single test bench; other hardware was not evaluated"
+    type: limitation
+    source: {kind: researcher, note: "scope decision D-004"}

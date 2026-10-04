@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "data/dataset_manifest.yaml",
+  "type": "object",
+  "required": ["datasets"],
+  "properties": {
+    "datasets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "version", "source", "license", "files"],
+        "properties": {
+          "name": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+$"},
+          "version": {"type": "string"},
+          "description": {"type": "string"},
+          "synthetic": {"type": "boolean"},
+          "source": {
+            "type": "object",
+            "required": ["kind"],
+            "properties": {
+              "kind": {"enum": ["local", "kaggle", "url", "instrument", "manual", "generated"]},
+              "location": {"type": "string"},
+              "access_verified": {"type": "boolean"},
+              "access_notes": {"type": "string"}
+            }
+          },
+          "license": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": {"type": "string"},
+              "url": {"type": "string"},
+              "permitted_use": {"type": "string"},
+              "redistribution_allowed": {"type": ["boolean", "null"]}
+            }
+          },
+          "collection_methodology": {"type": "string"},
+          "format": {"type": "string"},
+          "files": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["path"],
+              "properties": {
+                "path": {"type": "string"},
+                "split": {"type": "string"},
+                "format": {"type": "string"}
+              }
+            }
+          },
+          "target": {"type": ["string", "null"]},
+          "features": {"type": "array", "items": {"type": "string"}},
+          "group_column": {"type": ["string", "null"]},
+          "id_column": {"type": ["string", "null"]},
+          "expected_rows": {"type": "object"},
+          "split_fractions": {"type": "object"},
+          "column_checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["column"],
+              "properties": {
+                "column": {"type": "string"},
+                "unit": {"type": "string"},
+                "min": {"type": ["number", "null"]},
+                "max": {"type": ["number", "null"]},
+                "allowed": {"type": "array"},
+                "required": {"type": "boolean"},
+                "max_missing_fraction": {"type": "number", "minimum": 0, "maximum": 1}
+              }
+            }
+          },
+          "metadata": {"type": "object"},
+          "metadata_requirements": {"type": "array", "items": {"type": "string"}},
+          "custom_checks": {"type": "array", "items": {"type": "string"}},
+          "preprocessing": {"type": "array", "items": {"type": "string"}},
+          "known_limitations": {"type": "array", "items": {"type": "string"}},
+          "fingerprint": {"type": ["object", "null"]}
+        }
+      }
+    }
+  }
+}

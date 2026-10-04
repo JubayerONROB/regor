@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "research-engine"
+version = "0.1.0"
+description = "A domain-independent, evidence-grounded automated research pipeline."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "pyyaml>=6.0",
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "jsonschema>=4.0",
+]
+
+[project.optional-dependencies]
+plots = ["matplotlib>=3.7"]
+kaggle = ["kaggle>=1.6"]
+dev = ["pytest>=7", "matplotlib>=3.7"]
+
+[project.scripts]
+research = "research_engine.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["research_engine*"]
+
+[tool.setuptools.package-data]
+research_engine = ["schemas/*.json", "claude_commands/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

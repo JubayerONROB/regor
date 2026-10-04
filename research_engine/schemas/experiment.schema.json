@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "experiment specification (experiments/configs/<ID>.yaml)",
+  "type": "object",
+  "required": ["id", "title", "type", "rationale", "metrics"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"},
+    "title": {"type": "string", "minLength": 1},
+    "type": {"enum": ["baseline", "proposed", "ablation", "sensitivity", "robustness",
+                      "generalization", "efficiency", "replication", "exploratory",
+                      "measurement", "simulation", "other"]},
+    "status": {"enum": ["draft", "approved", "active", "completed", "abandoned"]},
+    "research_questions": {"type": "array", "items": {"type": "string"}},
+    "hypotheses": {"type": "array", "items": {"type": "string"}},
+    "rationale": {"type": "string", "minLength": 1},
+    "depends_on": {"type": "array", "items": {"type": "string"}},
+    "compare_with": {"type": "array", "items": {"type": "string"}},
+    "dataset": {
+      "type": ["object", "null"],
+      "properties": {
+        "name": {"type": "string"},
+        "version": {"type": "string"},
+        "splits": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "method": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "description": {"type": "string"},
+        "params": {"type": "object"}
+      }
+    },
+    "variables": {
+      "type": "object",
+      "properties": {
+        "independent": {"type": "array"},
+        "dependent": {"type": "array"},
+        "controlled": {"type": "array"}
+      }
+    },
+    "entrypoint": {
+      "type": "object",
+      "required": ["command"],
+      "properties": {
+        "command": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "code_files": {"type": "array", "items": {"type": "string"}},
+        "env": {"type": "object", "additionalProperties": {"type": "string"}}
+      }
+    },
+    "parameters": {"type": "object"},
+    "seeds": {"type": "array", "items": {"type": "integer"}},
+    "metrics": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "direction"],
+        "properties": {
+          "name": {"type": "string"},
+          "direction": {"enum": ["higher", "lower", "none"]},
+          "unit": {"type": "string"},
+          "definition": {"type": "string"},
+          "valid_range": {"type": "array", "items": {"type": ["number", "null"]}, "minItems": 2, "maxItems": 2}
+        }
+      }
+    },
+    "expected_outputs": {"type": "array", "items": {"type": "string"}},
+    "expected_samples": {"type": ["integer", "null"], "minimum": 0},
+    "compute": {
+      "type": "object",
+      "properties": {
+        "backend": {"enum": ["local", "kaggle", "manual"]},
+        "device": {"enum": ["cpu", "gpu", "any"]},
+        "estimated_hours": {"type": "number", "minimum": 0},
+        "timeout_hours": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "memory_gb": {"type": ["number", "null"], "minimum": 0}
+      }
+    },
+    "statistics": {
+      "type": "object",
+      "properties": {
+        "test": {"type": "string"},
+        "paired_by": {"type": ["string", "null"]},
+        "notes": {"type": "string"}
+      }
+    },
+    "failure_criteria": {"type": "array", "items": {"type": "string"}},
+    "confounders": {"type": "array", "items": {"type": "string"}},
+    "nondeterminism_notes": {"type": "string"}
+  }
+}

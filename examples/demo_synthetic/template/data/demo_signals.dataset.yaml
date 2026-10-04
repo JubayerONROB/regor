@@ -1,0 +1,24 @@
+name: demo_signals
+version: "1.0"
+synthetic: true
+description: "SYNTHETIC two-tone signal with Gaussian noise and sparse impulses (scripts/generate_data.py, seed 2026)."
+source: {kind: generated, location: scripts/generate_data.py, access_verified: true}
+license: {name: "CC0-1.0 (generated for this demo)", redistribution_allowed: true}
+collection_methodology: "Generated programmatically; no measurement involved."
+format: csv
+files:
+  - {path: data/raw/demo_signals/train.csv, split: train}
+  - {path: data/raw/demo_signals/test.csv, split: test}
+features: [t, noisy]
+time_column: t
+expected_interval: 0.01
+expected_rows: {train: 2800, test: 1200}
+column_checks:
+  - {column: clean, min: -2.0, max: 2.0, unit: "a.u."}
+  - {column: noisy, min: -6.0, max: 6.0, unit: "a.u.", max_missing_fraction: 0.0}
+  - {column: t, min: 0, max: 40, unit: s}
+metadata: {sampling_rate_hz: 100}
+metadata_requirements: [sampling_rate_hz]
+known_limitations:
+  - "Synthetic: the noise model (Gaussian + uniform-amplitude impulses) is an assumption, not a measurement."
+  - "Single signal family; no claim about other signal types follows."

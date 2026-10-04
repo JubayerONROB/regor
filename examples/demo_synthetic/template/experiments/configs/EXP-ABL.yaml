@@ -1,0 +1,32 @@
+id: EXP-ABL
+title: "Ablation: median filter window 3 (vs 5 in EXP-PROP)"
+type: ablation
+status: approved
+research_questions: [RQ2]
+hypotheses: [H2]
+rationale: "Isolates the window length of the proposed filter (one variable changed)."
+depends_on: [EXP-PROP]
+dataset: {name: demo_signals, version: "1.0"}
+method:
+  name: median
+  description: "Centred running median with edge padding."
+  params: {window: 3}
+variables:
+  independent: [window length]
+  dependent: [rmse, mae]
+  controlled: [filter type, dataset version, evaluation segments (seed-paired)]
+entrypoint:
+  command: ["{python}", "experiments/scripts/denoise.py"]
+  code_files: [experiments/scripts/denoise.py]
+parameters: {data_dir: data/raw/demo_signals, segment_length: 400, n_segments: 10}
+seeds: [0, 1, 2, 3, 4]
+metrics:
+  - {name: rmse, direction: lower, unit: "", definition: "root-mean-square error between filtered and clean signal over the sampled test segments", valid_range: [0, null]}
+  - {name: mae, direction: lower, unit: "", definition: "mean absolute error over the sampled test segments", valid_range: [0, null]}
+  - {name: runtime_ms, direction: lower, unit: ms, definition: "wall-clock filtering time for all segments (machine dependent)", valid_range: [0, null]}
+expected_outputs: [metrics.json, execution.log]
+expected_samples: 4000
+compute: {backend: local, device: cpu, estimated_hours: 0.001}
+statistics: {test: auto, paired_by: seed}
+failure_criteria: ["any seed fails"]
+nondeterminism_notes: "runtime_ms depends on machine load."

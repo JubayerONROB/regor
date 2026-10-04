@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "runs/metadata/<run_id>.json",
+  "type": "object",
+  "required": ["run_id", "experiment_id", "status", "validation", "config_sha256", "config_snapshot", "seed", "backend", "created_at"],
+  "properties": {
+    "run_id": {"type": "string"},
+    "experiment_id": {"type": "string"},
+    "status": {"enum": ["CREATED", "RUNNING", "SUBMITTED", "COMPLETED", "FAILED", "CANCELLED", "TIMED_OUT", "IMPORTED"]},
+    "validation": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {"enum": ["UNVALIDATED", "VALIDATED", "PROVISIONAL", "INCOMPLETE", "INVALID"]},
+        "checked_at": {"type": ["string", "null"]},
+        "issues": {"type": "array"}
+      }
+    },
+    "config_sha256": {"type": "string"},
+    "config_snapshot": {"type": "object"},
+    "seed": {"type": ["integer", "null"]},
+    "backend": {"type": "string"},
+    "dataset": {"type": ["object", "null"]},
+    "provenance": {"type": "object"},
+    "created_at": {"type": "string"},
+    "started_at": {"type": ["string", "null"]},
+    "finished_at": {"type": ["string", "null"]},
+    "runtime_seconds": {"type": ["number", "null"]},
+    "exit_code": {"type": ["integer", "null"]},
+    "error": {"type": ["string", "null"]},
+    "outputs": {"type": "object"},
+    "metrics": {"type": "object"},
+    "remote": {"type": ["object", "null"]},
+    "resume_from": {"type": ["string", "null"]},
+    "approval_id": {"type": ["string", "null"]},
+    "notes": {"type": "array"}
+  }
+}

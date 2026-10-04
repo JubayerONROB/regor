@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "project.yaml",
+  "type": "object",
+  "required": ["schema_version", "project", "research", "statistics", "execution", "stopping", "manuscript"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "project": {
+      "type": "object",
+      "required": ["name", "domain"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "title": {"type": "string"},
+        "domain": {"type": "string", "minLength": 1},
+        "description": {"type": "string"},
+        "authors": {"type": "array", "items": {"type": "object"}},
+        "created": {"type": "string"}
+      }
+    },
+    "research": {
+      "type": "object",
+      "properties": {
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "text"],
+            "properties": {
+              "id": {"type": "string", "pattern": "^RQ[0-9A-Za-z_.-]+$"},
+              "text": {"type": "string"}
+            }
+          }
+        },
+        "hypotheses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "statement"],
+            "properties": {
+              "id": {"type": "string", "pattern": "^H[0-9A-Za-z_.-]+$"},
+              "rq": {"type": "string"},
+              "statement": {"type": "string"},
+              "falsification": {"type": "string"},
+              "status": {"enum": ["proposed", "supported", "refuted", "inconclusive", "withdrawn"]}
+            }
+          }
+        },
+        "objectives": {"type": "array", "items": {"type": "string"}},
+        "scope": {"type": "string"},
+        "assumptions": {"type": "array", "items": {"type": "string"}},
+        "constraints": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "statistics": {
+      "type": "object",
+      "properties": {
+        "alpha": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+        "min_replicates": {"type": "integer", "minimum": 1},
+        "multiple_comparison": {"enum": ["holm", "bonferroni", "none"]},
+        "default_test": {"type": "string"},
+        "bootstrap_resamples": {"type": "integer", "minimum": 100},
+        "confidence_level": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1}
+      }
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "default_backend": {"enum": ["local", "kaggle", "manual"]},
+        "max_concurrent": {"type": "integer", "minimum": 1},
+        "default_timeout_hours": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "approval": {
+          "type": "object",
+          "properties": {
+            "required_for_backends": {"type": "array", "items": {"type": "string"}},
+            "required_above_estimated_hours": {"type": ["number", "null"], "minimum": 0},
+            "required_for_devices": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "kaggle": {
+          "type": "object",
+          "properties": {
+            "enabled": {"type": "boolean"},
+            "credentials_env": {"type": "string"},
+            "accelerator": {"type": ["string", "null"]},
+            "internet": {"type": "boolean"},
+            "private": {"type": "boolean"},
+            "dataset_sources": {"type": "array", "items": {"type": "string"}},
+            "max_retries": {"type": "integer", "minimum": 0},
+            "poll_seconds": {"type": "integer", "minimum": 5}
+          }
+        }
+      }
+    },
+    "stopping": {
+      "type": "object",
+      "properties": {
+        "max_iterations": {"type": ["integer", "null"], "minimum": 1},
+        "compute_budget_hours": {"type": ["number", "null"], "minimum": 0},
+        "deadline": {"type": ["string", "null"]},
+        "saturation_window": {"type": ["integer", "null"], "minimum": 1},
+        "require_review_every": {"type": "integer", "minimum": 1},
+        "max_concurrent_experiments": {"type": "integer", "minimum": 1}
+      }
+    },
+    "manuscript": {
+      "type": "object",
+      "properties": {
+        "sections": {"type": "array", "items": {"type": "string"}},
+        "results_sections": {"type": "array", "items": {"type": "string"}},
+        "declarations": {"type": "object"},
+        "target_journal": {"type": ["string", "null"]}
+      }
+    }
+  }
+}
